@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field name="search" type="text" label="JSEARCH_FILTER" hint="COM_PUNGACONTACTFORM_SEARCH_HINT" />
+        <field name="status" type="list" label="COM_PUNGACONTACTFORM_STATUS" onchange="this.form.submit();">
+            <option value="">COM_PUNGACONTACTFORM_ALL_STATUSES</option>
+            <option value="sent">COM_PUNGACONTACTFORM_STATUS_SENT</option>
+            <option value="rejected">COM_PUNGACONTACTFORM_STATUS_REJECTED</option>
+            <option value="failed">COM_PUNGACONTACTFORM_STATUS_FAILED</option>
+        </field>
+        <field name="archived" type="list" label="COM_PUNGACONTACTFORM_ARCHIVED" onchange="this.form.submit();">
+            <option value="">COM_PUNGACONTACTFORM_ALL_ARCHIVE_STATES</option>
+            <option value="0">COM_PUNGACONTACTFORM_ACTIVE</option>
+            <option value="1">COM_PUNGACONTACTFORM_ARCHIVED</option>
+        </field>
+    </fields>
+    <fields name="list">
+        <field name="fullordering" type="list" default="created_at DESC" label="JGLOBAL_SORT_BY" onchange="this.form.submit();">
+            <option value="created_at DESC">JDATE_DESC</option>
+            <option value="created_at ASC">JDATE_ASC</option>
+            <option value="id DESC">JGRID_HEADING_ID_DESC</option>
+            <option value="id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="spam_score DESC">COM_PUNGACONTACTFORM_SCORE_DESC</option>
+            <option value="spam_score ASC">COM_PUNGACONTACTFORM_SCORE_ASC</option>
+            <option value="subject ASC">COM_PUNGACONTACTFORM_SUBJECT_ASC</option>
+            <option value="subject DESC">COM_PUNGACONTACTFORM_SUBJECT_DESC</option>
+        </field>
+        <field name="limit" type="limitbox" label="JGLOBAL_LIST_LIMIT" default="20" onchange="this.form.submit();" />
+    </fields>
+</form>

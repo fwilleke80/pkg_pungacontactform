@@ -5,12 +5,13 @@
     <creationDate>2026-10</creationDate>
     <copyright>Copyright (C) 2026 Punga</copyright>
     <license>GNU General Public License version 2 or later</license>
-    <version>0.1.2</version>
+    <version>0.1.6</version>
     <description>COM_PUNGACONTACTFORM_XML_DESCRIPTION</description>
     <namespace path="src">Punga\Component\Pungacontactform</namespace>
     <install>
         <sql><file driver="mysql" charset="utf8">sql/install.mysql.sql</file><file driver="postgresql" charset="utf8">sql/install.postgresql.sql</file></sql>
     </install>
+    <update><schemas><schemapath type="mysql">sql/updates/mysql</schemapath><schemapath type="postgresql">sql/updates/postgresql</schemapath></schemas></update>
     <uninstall>
         <sql><file driver="mysql" charset="utf8">sql/uninstall.mysql.sql</file><file driver="postgresql" charset="utf8">sql/uninstall.postgresql.sql</file></sql>
     </uninstall>
@@ -25,7 +26,7 @@
     <administration>
         <menu img="class:envelope">COM_PUNGACONTACTFORM</menu>
         <files folder="admin">
-            <filename>config.xml</filename><filename>access.xml</filename><folder>services</folder><folder>src</folder><folder>tmpl</folder><folder>sql</folder>
+            <filename>config.xml</filename><filename>access.xml</filename><folder>services</folder><folder>forms</folder><folder>src</folder><folder>tmpl</folder><folder>sql</folder>
         </files>
         <languages folder="admin">
             <language tag="en-GB">language/en-GB/com_pungacontactform.ini</language>

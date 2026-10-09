@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<config>
+<config addfieldprefix="Punga\Component\Pungacontactform\Administrator\Field">
+    <inlinehelp button="show" />
     <fieldset name="general" label="COM_PUNGACONTACTFORM_SETTINGS">
-        <field name="recipient_email" type="email" required="true" label="COM_PUNGACONTACTFORM_RECIPIENT" description="COM_PUNGACONTACTFORM_RECIPIENT_DESC" filter="string" />
+        <field name="recipient_email" type="email" required="true" label="COM_PUNGACONTACTFORM_RECIPIENT" description="COM_PUNGACONTACTFORM_RECIPIENT_GLOBAL_DESC" filter="string" />
         <field name="copy_mode" type="list" default="optional" label="COM_PUNGACONTACTFORM_COPY_MODE">
             <option value="off">COM_PUNGACONTACTFORM_COPY_OFF</option>
             <option value="optional">COM_PUNGACONTACTFORM_COPY_OPTIONAL</option>
             <option value="always">COM_PUNGACONTACTFORM_COPY_ALWAYS</option>
         </field>
+        <field name="copy_sender_email" type="email" label="COM_PUNGACONTACTFORM_COPY_SENDER_EMAIL" description="COM_PUNGACONTACTFORM_COPY_SENDER_EMAIL_DESC" filter="string" />
+        <field name="copy_sender_name" type="text" default="Punga Contact Form" maxlength="120" label="COM_PUNGACONTACTFORM_COPY_SENDER_NAME" description="COM_PUNGACONTACTFORM_COPY_SENDER_NAME_DESC" filter="string" />
         <field name="intro_text" type="textarea" rows="4" filter="raw" label="COM_PUNGACONTACTFORM_INTRO" description="COM_PUNGACONTACTFORM_PLAINTEXT_DESC" />
         <field name="success_message" type="textarea" rows="2" filter="raw" label="COM_PUNGACONTACTFORM_SUCCESS" description="COM_PUNGACONTACTFORM_PLAINTEXT_DESC" />
         <field name="error_message" type="textarea" rows="2" filter="raw" label="COM_PUNGACONTACTFORM_ERROR" description="COM_PUNGACONTACTFORM_PLAINTEXT_DESC" />
     </fieldset>
-    <fieldset name="security" label="COM_PUNGACONTACTFORM_SECURITY">
+    <fieldset name="security" label="COM_PUNGACONTACTFORM_SECURITY" addfieldprefix="Punga\Component\Pungacontactform\Administrator\Field">
         <field name="captcha_mode" type="list" default="auto" label="COM_PUNGACONTACTFORM_CAPTCHA_MODE" description="COM_PUNGACONTACTFORM_CAPTCHA_DESC">
             <option value="auto">COM_PUNGACONTACTFORM_CAPTCHA_AUTO</option>
             <option value="required">COM_PUNGACONTACTFORM_CAPTCHA_REQUIRED</option>
@@ -23,9 +26,22 @@
             <option value="all">COM_PUNGACONTACTFORM_SPAM_ALL</option>
         </field>
         <field name="spam_threshold" type="number" default="8" min="4" max="20" step="1" label="COM_PUNGACONTACTFORM_SPAM_THRESHOLD" description="COM_PUNGACONTACTFORM_SPAM_THRESHOLD_DESC" />
+        <field name="spamrules" type="spamrules" addfieldprefix="Punga\Component\Pungacontactform\Administrator\Field" label="COM_PUNGACONTACTFORM_RULES_HEADING" description="COM_PUNGACONTACTFORM_RULES_READONLY" />
         <field name="spam_keywords" type="textarea" rows="5" filter="raw" label="COM_PUNGACONTACTFORM_SPAM_KEYWORDS" description="COM_PUNGACONTACTFORM_SPAM_KEYWORDS_DESC" />
         <field name="min_fill_seconds" type="number" default="3" min="1" max="30" step="1" label="COM_PUNGACONTACTFORM_MIN_FILL" />
         <field name="max_per_hour" type="number" default="10" min="1" max="50" step="1" label="COM_PUNGACONTACTFORM_HOURLY_LIMIT" />
+    </fieldset>
+    <fieldset name="storage" label="COM_PUNGACONTACTFORM_STORAGE">
+        <field name="store_sent" type="radio" layout="joomla.form.field.radio.switcher" default="0" filter="integer" label="COM_PUNGACONTACTFORM_STORE_SENT" description="COM_PUNGACONTACTFORM_STORE_SENT_DESC">
+            <option value="0">JNO</option><option value="1">JYES</option>
+        </field>
+        <field name="store_rejected" type="radio" layout="joomla.form.field.radio.switcher" default="1" filter="integer" label="COM_PUNGACONTACTFORM_STORE_REJECTED" description="COM_PUNGACONTACTFORM_STORE_REJECTED_DESC">
+            <option value="0">JNO</option><option value="1">JYES</option>
+        </field>
+        <field name="store_failed" type="radio" layout="joomla.form.field.radio.switcher" default="1" filter="integer" label="COM_PUNGACONTACTFORM_STORE_FAILED" description="COM_PUNGACONTACTFORM_STORE_FAILED_DESC">
+            <option value="0">JNO</option><option value="1">JYES</option>
+        </field>
+        <field name="retention_days" type="number" min="1" max="365" step="1" default="30" label="COM_PUNGACONTACTFORM_RETENTION" description="COM_PUNGACONTACTFORM_RETENTION_DESC" />
     </fieldset>
     <fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
         <field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_pungacontactform" section="component" />

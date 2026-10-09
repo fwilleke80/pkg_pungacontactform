@@ -16,6 +16,8 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Punga\Component\Pungacontactform\Site\Helper\AnalyticsHelper;
 use Punga\Component\Pungacontactform\Site\Helper\FormHelper;
+use Punga\Component\Pungacontactform\Site\Helper\MessageStoreHelper;
+use Punga\Component\Pungacontactform\Site\Helper\SenderCopyHelper;
 use Punga\Component\Pungacontactform\Site\Helper\SpamHelper;
 use Punga\Component\Pungacontactform\Site\Helper\ThrottleHelper;
 
@@ -105,6 +107,7 @@ final class ContactController extends BaseController
         if ($plain($data['website'] ?? '') !== '')
         {
             AnalyticsHelper::record('rejected', $source, $isGuest, 'honeypot');
+            MessageStoreHelper::record('rejected', 'honeypot', $source, $isGuest);
             // Conceal honeypot detection from automated senders.
             $session->clear('pungacontactform.previous.' . $source);
             $this->setRedirect($return, FormHelper::escape($success), 'message');
@@ -113,6 +116,7 @@ final class ContactController extends BaseController
         if (time() - (int) $context['created'] < (int) $settings['min_fill_seconds'])
         {
             AnalyticsHelper::record('rejected', $source, $isGuest, 'too_fast');
+            MessageStoreHelper::record('rejected', 'too_fast', $source, $isGuest);
             $failed();
             return;
         }
@@ -123,6 +127,7 @@ final class ContactController extends BaseController
             || $body === '' || mb_strlen($body) > 20000)
         {
             AnalyticsHelper::record('rejected', $source, $isGuest, 'validation');
+            MessageStoreHelper::record('rejected', 'validation', $source, $isGuest);
             $failed();
             return;
         }
@@ -130,6 +135,7 @@ final class ContactController extends BaseController
         if (!FormHelper::verifyCaptcha((string) $context['captcha_plugin'], $data['captcha'] ?? ''))
         {
             AnalyticsHelper::record('rejected', $source, $isGuest, 'captcha');
+            MessageStoreHelper::record('rejected', 'captcha', $source, $isGuest);
             $failed();
             return;
         }
@@ -137,70 +143,81 @@ final class ContactController extends BaseController
         // Check the submitting user's actual Joomla identity. Menu/module state
         // alone cannot prove registration. CAPTCHA, quotas and validation above
         // remain active regardless of the selected content-filter mode.
-        if (SpamHelper::shouldDiscard($settings, $isGuest, $subject, $body))
+        $mode = (string) $settings['spam_filter_mode'];
+        $scan = $mode === 'all' || ($mode === 'guests' && $isGuest);
+        $analysis = $scan
+            ? SpamHelper::analyzeDetailed($subject, $body, (string) ($settings['spam_keywords'] ?? ''))
+            : ['score'=>0, 'matches'=>[]];
+        $analysis['threshold'] = (int) $settings['spam_threshold'];
+        if ($scan && $analysis['score'] >= $analysis['threshold'])
         {
-            AnalyticsHelper::record('rejected', $source, $isGuest, 'content_filter',
-                SpamHelper::analyze($subject, $body, (string) ($settings['spam_keywords'] ?? '')));
-            // Don't confirm to a spam bot that its message was recognized.
-            // Neither the recipient message nor the optional sender copy is sent.
+            AnalyticsHelper::record('rejected', $source, $isGuest, 'content_filter', $analysis['score']);
+            MessageStoreHelper::record('rejected', 'content_filter', $source, $isGuest, $stored, $analysis);
+            // Deliberately do not disclose spam-filter decisions to visitors.
             $session->clear('pungacontactform.previous.' . $source);
             $this->setRedirect($return, FormHelper::escape($success), 'message');
             return;
         }
 
-        $factory = Factory::getContainer()->get(MailerFactoryInterface::class);
-        $config = Factory::getConfig();
-        $from = (string) $config->get('mailfrom', '');
-        $fromName = (string) $config->get('fromname', '');
         $mailBody = Text::sprintf('COM_PUNGACONTACTFORM_MAIL_FROM', $name)
             . "\n" . Text::sprintf('COM_PUNGACONTACTFORM_MAIL_EMAIL', $email)
             . "\n" . Text::sprintf('COM_PUNGACONTACTFORM_MAIL_SUBJECT', $subject)
             . "\n\n" . $body;
-
         try
         {
-            // Never use untrusted email as From: it would break SPF/DMARC.
+            // Joomla 6: Factory::getConfig() was removed. Resolve mailer and
+            // application config inside the exception boundary, too.
+            $factory = Factory::getContainer()->get(MailerFactoryInterface::class);
+            $config = $app->getConfig();
+            $from = (string) $config->get('mailfrom', '');
+            $fromName = (string) $config->get('fromname', '');
+            if (!filter_var($from, FILTER_VALIDATE_EMAIL))
+            {
+                throw new \RuntimeException('Global Joomla mail sender not configured');
+            }
             $mailer = $factory->createMailer();
             $mailer->setSender($from, $fromName);
             $mailer->addRecipient((string) $settings['recipient']);
             $mailer->addReplyTo($email, $name);
             $mailer->setSubject($subject);
-            $mailer->isHtml(false);
             $mailer->setBody($mailBody);
-            if ($mailer->send() === false)
-            {
-                throw new \RuntimeException('Joomla mail transport reported failure');
-            }
+            // MailerInterface::send returns void and throws on failure.
+            $mailer->send();
         }
-        catch (\Throwable)
+        catch (\Throwable $exception)
         {
-            Log::add('Punga Contact Form: recipient delivery failed.', Log::WARNING, 'com_pungacontactform');
+            // Never expose recipient, sender, message or SMTP credentials in
+            // frontend output or the diagnostic log.
+            Log::add('Punga Contact Form: mail transport failed (' . get_class($exception) . ').', Log::WARNING, 'com_pungacontactform');
+            MessageStoreHelper::record('failed', 'mail_transport', $source, $isGuest, $stored, $analysis);
             $failed();
             return;
         }
 
-        $sendCopy = $settings['copy_mode'] === 'always'
+        // Copies are permitted only with an explicitly configured public From
+        // address distinct from both the current and the component recipient.
+        // Never let Joomla's default (possibly private) From leak to visitors.
+        $copyRequested = $settings['copy_mode'] === 'always'
             || ($settings['copy_mode'] === 'optional' && $copy);
-        if ($sendCopy)
+        if ($copyRequested && SenderCopyHelper::available($settings))
         {
             try
             {
-                // Separate mail: no CC/BCC and no disclosure of the recipient.
-                $mailer = $factory->createMailer();
-                $mailer->setSender($from, $fromName);
-                $mailer->addRecipient($email, $name);
-                $mailer->setSubject(Text::sprintf('COM_PUNGACONTACTFORM_COPY_SUBJECT', $subject));
-                $mailer->isHtml(false);
-                $mailer->setBody($mailBody);
-                $mailer->send();
+                SenderCopyHelper::send($factory, $settings, $email, $name, $subject, $mailBody);
             }
             catch (\Throwable)
             {
-                // Original delivery succeeded; a copy failure is non-fatal.
-                Log::add('Punga Contact Form: sender copy failed.', Log::WARNING, 'com_pungacontactform');
+                // Main delivery succeeded; never expose mail configuration in logs.
+                Log::add('Punga Contact Form: public sender copy failed.', Log::WARNING, 'com_pungacontactform');
             }
         }
+        elseif ($copyRequested)
+        {
+            // Fail closed. The main contact message still reaches its recipient.
+            Log::add('Punga Contact Form: sender copy suppressed (public sender missing or unsafe).', Log::WARNING, 'com_pungacontactform');
+        }
 
+        MessageStoreHelper::record('sent', '', $source, $isGuest, $stored, $analysis);
         AnalyticsHelper::record('sent', $source, $isGuest);
         $session->clear('pungacontactform.previous.' . $source);
         $this->setRedirect($return, FormHelper::escape($success), 'message');

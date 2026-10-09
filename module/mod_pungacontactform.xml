@@ -5,7 +5,7 @@
     <creationDate>2026-10</creationDate>
     <copyright>Copyright (C) 2026 Punga</copyright>
     <license>GNU General Public License version 2 or later</license>
-    <version>0.1.2</version>
+    <version>0.1.6</version>
     <description>MOD_PUNGACONTACTFORM_XML_DESCRIPTION</description>
     <files>
         <filename module="mod_pungacontactform">mod_pungacontactform.php</filename>
@@ -20,7 +20,7 @@
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field name="recipient_email" type="email" label="COM_PUNGACONTACTFORM_RECIPIENT_OVERRIDE" description="COM_PUNGACONTACTFORM_RECIPIENT_DESC" filter="string" />
+                <field name="recipient_email" type="email" label="COM_PUNGACONTACTFORM_RECIPIENT_OVERRIDE" description="COM_PUNGACONTACTFORM_RECIPIENT_OVERRIDE_DESC" filter="string" />
                 <field name="copy_mode" type="list" default="inherit" label="COM_PUNGACONTACTFORM_COPY_MODE">
                     <option value="inherit">COM_PUNGACONTACTFORM_INHERIT</option>
                     <option value="off">COM_PUNGACONTACTFORM_COPY_OFF</option>

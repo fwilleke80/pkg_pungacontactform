@@ -7,11 +7,11 @@ import shutil
 import zipfile
 import xml.etree.ElementTree as ET
 
-VERSION = "0-1-2"
+VERSION = "0-1-6"
 ROOT = Path(__file__).resolve().parent
 BUILD = ROOT / "build"
 DIST = ROOT / "dist"
-STAMP = (2026, 10, 8, 10, 0, 0)
+STAMP = (2026, 10, 9, 12, 0, 0)
 
 
 def write_zip(destination: Path, sources: list[tuple[Path, str]]) -> None:
@@ -59,9 +59,10 @@ def build() -> None:
 
     source = DIST / f"pungacontactform_v{VERSION}_source.zip"
     source_files: list[tuple[Path, str]] = []
-    for folder in ["component", "module", "package", "tests"]:
+    for folder in ["component", "module", "package", "tests", "docs"]:
         source_files.extend((path, f"pungacontactform/{folder}/{name}") for path, name in tree_files(ROOT / folder))
     source_files.append((ROOT / "README.md", "pungacontactform/README.md"))
+    source_files.append((ROOT / "CHANGELOG.md", "pungacontactform/CHANGELOG.md"))
     source_files.append((ROOT / ".gitignore", "pungacontactform/.gitignore"))
     source_files.append((ROOT / "build.py", "pungacontactform/build.py"))
     write_zip(source, source_files)

@@ -59,6 +59,10 @@ final class FormHelper
 
         return [
             'recipient' => trim($get('recipient_email')),
+            'default_recipient' => trim((string) $global->get('recipient_email', '')),
+            // Explicit public identity only: never inherit Joomla's global From for copies.
+            'copy_sender_email' => trim((string) $global->get('copy_sender_email', '')),
+            'copy_sender_name' => (string) $global->get('copy_sender_name', ''),
             'copy_mode' => in_array($copyMode, ['off', 'optional', 'always'], true) ? $copyMode : 'optional',
             'captcha_mode' => in_array($captchaMode, ['auto', 'required', 'off'], true) ? $captchaMode : 'auto',
             'spam_filter_mode' => in_array($spamMode, ['off', 'guests', 'all'], true) ? $spamMode : 'guests',

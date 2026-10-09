@@ -32,7 +32,7 @@ use Punga\Component\Pungacontactform\Site\Helper\FormHelper;
             <label for="<?php echo $formId; ?>-message"><?php echo Text::_('COM_PUNGACONTACTFORM_MESSAGE'); ?></label>
             <textarea class="form-control" id="<?php echo $formId; ?>-message" name="pcf[body]" maxlength="20000" rows="7" required><?php echo FormHelper::escape($body); ?></textarea>
         </div>
-        <?php if ($settings['copy_mode'] === 'optional') : ?>
+        <?php if ($settings['copy_mode'] === 'optional' && \Punga\Component\Pungacontactform\Site\Helper\SenderCopyHelper::available($settings)) : ?>
             <div class="pcf-field pcf-copy">
                 <input type="checkbox" id="<?php echo $formId; ?>-copy" name="pcf[copy]" value="1"<?php echo $wantCopy ? ' checked' : ''; ?>>
                 <label for="<?php echo $formId; ?>-copy"><?php echo Text::_('COM_PUNGACONTACTFORM_COPY_CHECKBOX'); ?></label>

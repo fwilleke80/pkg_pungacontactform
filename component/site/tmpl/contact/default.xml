@@ -5,7 +5,7 @@
     </layout>
     <fields name="params">
         <fieldset name="basic" label="COM_PUNGACONTACTFORM_OVERRIDE_SETTINGS">
-            <field name="recipient_email" type="email" label="COM_PUNGACONTACTFORM_RECIPIENT_OVERRIDE" description="COM_PUNGACONTACTFORM_RECIPIENT_DESC" filter="string" />
+            <field name="recipient_email" type="email" label="COM_PUNGACONTACTFORM_RECIPIENT_OVERRIDE" description="COM_PUNGACONTACTFORM_RECIPIENT_OVERRIDE_DESC" filter="string" />
             <field name="copy_mode" type="list" default="inherit" label="COM_PUNGACONTACTFORM_COPY_MODE">
                 <option value="inherit">COM_PUNGACONTACTFORM_INHERIT</option>
                 <option value="off">COM_PUNGACONTACTFORM_COPY_OFF</option>

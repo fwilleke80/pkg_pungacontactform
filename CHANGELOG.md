@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.1.6 — 2026-10-09
+
+### Fixed
+- Register a proper Joomla 6 component SEF router for the `contact` frontend view. A contact menu item now routes to its alias (for example, `/contact`) without the redundant `?view=contact` query parameter.
+- Preserve Joomla's standard non-menu routing and existing form POST/redirect flows.
+- Remove the informational note above the Dashboard counters and the explanatory paragraph below the recent messages table.
+
+### Notes
+- Existing contact menu items need no recreation. On sites with cached menu output or page cache, clear the cache after upgrading.
+- Routing behavior still requires verification with Joomla SEF enabled on a running Joomla 6 site.
+
+## 0.1.5 — 2026-10-09
+
+### Security fix
+- Do not expose the private recipient address via the `From`, `Sender` or reply headers of sender-copy emails. Previously copies reused Joomla's global mail From address, which could be private.
+- Require an explicit public From address for all visitor copies. If missing, invalid or equal to the effective or global recipient address, copies are suppressed; for optional copies the frontend checkbox is hidden.
+- Initialize copy mailers with a public From override **before** constructing the Joomla mailer, protecting the initial message sender/envelope configuration. Main contact messages remain unaffected.
+- Add a separate, optional public copy sender display name. Copy errors are logged without private data.
+- Add isolated tests for sender-copy privacy and mailer options; document third-party SMTP header-rewriting limitations in `docs/MAIL_DELIVERY.md`.
+
+### Fixed
+- Correct the Joomla switcher direction in **Options → Message history and retention**. The three message-body retention controls now use Joomla's expected option order (No = 0 first, Yes = 1 second), so turning a switch on displays Yes and saves 1, and turning it off displays No and saves 0. Existing saved choices retain their original meaning.
+
+### Upgrade note
+- **Administrator action required to retain sender copies:** Configure a public copy sender email address in Component Options → General. Without it, sender copies intentionally remain disabled to prevent exposure of private mailboxes.
+
 ## 0.1.4 — 2026-10-09
 
 ### Added
