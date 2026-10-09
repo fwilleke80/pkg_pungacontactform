@@ -1,0 +1,43 @@
+# Changelog
+
+## 0.1.4 — 2026-10-09
+
+### Added
+- Dashboard: installed version read from Joomla extension metadata, plus the ten most recent sent, rejected and failed submission records with direct detail links and navigation to the full message manager.
+- Built-in spam rules and scoring weights shown in the **existing** Options → Spam Protection tab, alongside a link to the existing spam-test tool.
+
+### Fixed
+- Every classified submission now creates a history record even when body retention is disabled; the storage switches only govern message-body retention. Unvalidated security rejections are recorded without storing submitted text.
+- Joomla Component Options title translates to "Punga Contact Form" in English and German (`COM_PUNGACONTACTFORM_CONFIGURATION`).
+- Clearly identify message bodies that have not been retained.
+
+### Notes
+- No database schema changes are required for 0.1.4. Earlier submissions omitted under the 0.1.3 `store_sent` behavior cannot be reconstructed; cumulative counters survive archival, deletion and retention cleanup.
+- Live Joomla 6 administrator/configuration view and mail-flow checks remain necessary.
+
+## 0.1.3 — 2026-10-09
+
+### Fixed
+- Use Joomla 6's supported mailer factory and application configuration APIs, with mail-transport failure handling.
+- Correct the required global recipient description; empty menu/module recipient overrides inherit it.
+- Add the missing English and German menu-item overrides tab translation.
+- Add Joomla's native Toggle Inline Help button to component Options.
+
+### Added
+- Administrator dashboard with persistent counts for sent, rejected and failed submissions.
+- Searchable, sortable, paginated Joomla message history with detail pages and ACL-protected archive, unarchive and delete actions.
+- Optional message-body retention with per-category storage options and automatic 1–365-day cleanup.
+- Stored scoring contributions for content-filtered messages, plus a read-only list of built-in spam rules and their weights.
+- Administrator-only spam scoring simulator; custom blocked phrases remain editable in component Options.
+- Simple root README; technical documentation moved into docs/.
+
+### Notes
+- "Sent" means accepted by Joomla's mail transport; final mailbox delivery can be delayed or fail afterwards.
+- Aggregate counters begin with this release and cannot reconstruct historical submissions.
+- Runtime installation and SMTP testing on a real Joomla 6 site are still required.
+
+## 0.1.2
+- Added content spam-scoring rules, optional guest-only filtering, custom blocked phrases and Punga Analytics events.
+
+## 0.1.0
+- Initial Joomla 6 contact page and module, configurable recipient and copies, native CAPTCHA integration and layered form protections.
