@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_PUNGACONTACTFORM_MENU_TITLE" option="COM_PUNGACONTACTFORM_MENU_TITLE">
+        <message>COM_PUNGACONTACTFORM_MENU_DESC</message>
+    </layout>
+    <fields name="params">
+        <fieldset name="basic" label="COM_PUNGACONTACTFORM_OVERRIDE_SETTINGS">
+            <field name="recipient_email" type="email" label="COM_PUNGACONTACTFORM_RECIPIENT_OVERRIDE" description="COM_PUNGACONTACTFORM_RECIPIENT_DESC" filter="string" />
+            <field name="copy_mode" type="list" default="inherit" label="COM_PUNGACONTACTFORM_COPY_MODE">
+                <option value="inherit">COM_PUNGACONTACTFORM_INHERIT</option>
+                <option value="off">COM_PUNGACONTACTFORM_COPY_OFF</option>
+                <option value="optional">COM_PUNGACONTACTFORM_COPY_OPTIONAL</option>
+                <option value="always">COM_PUNGACONTACTFORM_COPY_ALWAYS</option>
+            </field>
+            <field name="captcha_mode" type="list" default="inherit" label="COM_PUNGACONTACTFORM_CAPTCHA_MODE">
+                <option value="inherit">COM_PUNGACONTACTFORM_INHERIT</option>
+                <option value="auto">COM_PUNGACONTACTFORM_CAPTCHA_AUTO</option>
+                <option value="required">COM_PUNGACONTACTFORM_CAPTCHA_REQUIRED</option>
+                <option value="off">COM_PUNGACONTACTFORM_CAPTCHA_OFF</option>
+            </field>
+            <field name="spam_filter_mode" type="list" default="inherit" label="COM_PUNGACONTACTFORM_SPAM_MODE" description="COM_PUNGACONTACTFORM_SPAM_MODE_DESC">
+                <option value="inherit">COM_PUNGACONTACTFORM_INHERIT</option>
+                <option value="off">COM_PUNGACONTACTFORM_SPAM_OFF</option>
+                <option value="guests">COM_PUNGACONTACTFORM_SPAM_GUESTS</option>
+                <option value="all">COM_PUNGACONTACTFORM_SPAM_ALL</option>
+            </field>
+            <field name="intro_text" type="textarea" rows="4" label="COM_PUNGACONTACTFORM_INTRO" filter="raw" />
+            <field name="success_message" type="textarea" rows="2" label="COM_PUNGACONTACTFORM_SUCCESS" filter="raw" />
+            <field name="error_message" type="textarea" rows="2" label="COM_PUNGACONTACTFORM_ERROR" filter="raw" />
+        </fieldset>
+    </fields>
+</metadata>

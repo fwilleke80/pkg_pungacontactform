@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" client="site" method="upgrade">
+    <name>mod_pungacontactform</name>
+    <author>Punga</author>
+    <creationDate>2026-10</creationDate>
+    <copyright>Copyright (C) 2026 Punga</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <version>0.1.2</version>
+    <description>MOD_PUNGACONTACTFORM_XML_DESCRIPTION</description>
+    <files>
+        <filename module="mod_pungacontactform">mod_pungacontactform.php</filename>
+        <folder>tmpl</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">language/en-GB/mod_pungacontactform.ini</language>
+        <language tag="en-GB">language/en-GB/mod_pungacontactform.sys.ini</language>
+        <language tag="de-DE">language/de-DE/mod_pungacontactform.ini</language>
+        <language tag="de-DE">language/de-DE/mod_pungacontactform.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="recipient_email" type="email" label="COM_PUNGACONTACTFORM_RECIPIENT_OVERRIDE" description="COM_PUNGACONTACTFORM_RECIPIENT_DESC" filter="string" />
+                <field name="copy_mode" type="list" default="inherit" label="COM_PUNGACONTACTFORM_COPY_MODE">
+                    <option value="inherit">COM_PUNGACONTACTFORM_INHERIT</option>
+                    <option value="off">COM_PUNGACONTACTFORM_COPY_OFF</option>
+                    <option value="optional">COM_PUNGACONTACTFORM_COPY_OPTIONAL</option>
+                    <option value="always">COM_PUNGACONTACTFORM_COPY_ALWAYS</option>
+                </field>
+                <field name="captcha_mode" type="list" default="inherit" label="COM_PUNGACONTACTFORM_CAPTCHA_MODE">
+                    <option value="inherit">COM_PUNGACONTACTFORM_INHERIT</option>
+                    <option value="auto">COM_PUNGACONTACTFORM_CAPTCHA_AUTO</option>
+                    <option value="required">COM_PUNGACONTACTFORM_CAPTCHA_REQUIRED</option>
+                    <option value="off">COM_PUNGACONTACTFORM_CAPTCHA_OFF</option>
+                </field>
+                <field name="spam_filter_mode" type="list" default="inherit" label="COM_PUNGACONTACTFORM_SPAM_MODE" description="COM_PUNGACONTACTFORM_SPAM_MODE_DESC">
+                <option value="inherit">COM_PUNGACONTACTFORM_INHERIT</option>
+                <option value="off">COM_PUNGACONTACTFORM_SPAM_OFF</option>
+                <option value="guests">COM_PUNGACONTACTFORM_SPAM_GUESTS</option>
+                <option value="all">COM_PUNGACONTACTFORM_SPAM_ALL</option>
+                </field>
+                <field name="intro_text" type="textarea" rows="4" label="COM_PUNGACONTACTFORM_INTRO" filter="raw" />
+                <field name="success_message" type="textarea" rows="2" label="COM_PUNGACONTACTFORM_SUCCESS" filter="raw" />
+                <field name="error_message" type="textarea" rows="2" label="COM_PUNGACONTACTFORM_ERROR" filter="raw" />
+            </fieldset>
+        </fields>
+    </config>
+</extension>

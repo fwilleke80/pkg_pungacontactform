@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="package" version="6.0" method="upgrade">
+    <name>pkg_pungacontactform</name>
+    <packagename>pungacontactform</packagename>
+    <author>Punga</author>
+    <creationDate>2026-10</creationDate>
+    <copyright>Copyright (C) 2026 Punga</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <version>0.1.2</version>
+    <description>Punga Contact Form: contact page and configurable site module.</description>
+    <files>
+        <file type="component" id="com_pungacontactform">com_pungacontactform.zip</file>
+        <file type="module" id="mod_pungacontactform" client="site">mod_pungacontactform.zip</file>
+    </files>
+</extension>

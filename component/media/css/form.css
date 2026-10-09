@@ -1,0 +1,11 @@
+.punga-contact-form {max-width: 38rem;}
+.punga-contact-form .pcf-intro {margin-bottom: 1.25rem;white-space: pre-line;}
+.punga-contact-form .pcf-field {margin-bottom: 1rem;}
+.punga-contact-form label {display:block;font-weight:600;margin-bottom:.35rem;}
+.punga-contact-form input[type="text"],
+.punga-contact-form input[type="email"],
+.punga-contact-form textarea {display:block;width:100%;max-width:100%;box-sizing:border-box;}
+.punga-contact-form textarea {min-height:9rem;resize:vertical;}
+.punga-contact-form .pcf-actions {display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem;}
+.punga-contact-form .pcf-copy label {display:inline;font-weight:400;}
+.punga-contact-form .pcf-trap {position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important;}

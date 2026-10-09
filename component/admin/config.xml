@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <fieldset name="general" label="COM_PUNGACONTACTFORM_SETTINGS">
+        <field name="recipient_email" type="email" required="true" label="COM_PUNGACONTACTFORM_RECIPIENT" description="COM_PUNGACONTACTFORM_RECIPIENT_DESC" filter="string" />
+        <field name="copy_mode" type="list" default="optional" label="COM_PUNGACONTACTFORM_COPY_MODE">
+            <option value="off">COM_PUNGACONTACTFORM_COPY_OFF</option>
+            <option value="optional">COM_PUNGACONTACTFORM_COPY_OPTIONAL</option>
+            <option value="always">COM_PUNGACONTACTFORM_COPY_ALWAYS</option>
+        </field>
+        <field name="intro_text" type="textarea" rows="4" filter="raw" label="COM_PUNGACONTACTFORM_INTRO" description="COM_PUNGACONTACTFORM_PLAINTEXT_DESC" />
+        <field name="success_message" type="textarea" rows="2" filter="raw" label="COM_PUNGACONTACTFORM_SUCCESS" description="COM_PUNGACONTACTFORM_PLAINTEXT_DESC" />
+        <field name="error_message" type="textarea" rows="2" filter="raw" label="COM_PUNGACONTACTFORM_ERROR" description="COM_PUNGACONTACTFORM_PLAINTEXT_DESC" />
+    </fieldset>
+    <fieldset name="security" label="COM_PUNGACONTACTFORM_SECURITY">
+        <field name="captcha_mode" type="list" default="auto" label="COM_PUNGACONTACTFORM_CAPTCHA_MODE" description="COM_PUNGACONTACTFORM_CAPTCHA_DESC">
+            <option value="auto">COM_PUNGACONTACTFORM_CAPTCHA_AUTO</option>
+            <option value="required">COM_PUNGACONTACTFORM_CAPTCHA_REQUIRED</option>
+            <option value="off">COM_PUNGACONTACTFORM_CAPTCHA_OFF</option>
+        </field>
+        <field name="spam_filter_mode" type="list" default="guests" label="COM_PUNGACONTACTFORM_SPAM_MODE" description="COM_PUNGACONTACTFORM_SPAM_MODE_DESC">
+            <option value="off">COM_PUNGACONTACTFORM_SPAM_OFF</option>
+            <option value="guests">COM_PUNGACONTACTFORM_SPAM_GUESTS</option>
+            <option value="all">COM_PUNGACONTACTFORM_SPAM_ALL</option>
+        </field>
+        <field name="spam_threshold" type="number" default="8" min="4" max="20" step="1" label="COM_PUNGACONTACTFORM_SPAM_THRESHOLD" description="COM_PUNGACONTACTFORM_SPAM_THRESHOLD_DESC" />
+        <field name="spam_keywords" type="textarea" rows="5" filter="raw" label="COM_PUNGACONTACTFORM_SPAM_KEYWORDS" description="COM_PUNGACONTACTFORM_SPAM_KEYWORDS_DESC" />
+        <field name="min_fill_seconds" type="number" default="3" min="1" max="30" step="1" label="COM_PUNGACONTACTFORM_MIN_FILL" />
+        <field name="max_per_hour" type="number" default="10" min="1" max="50" step="1" label="COM_PUNGACONTACTFORM_HOURLY_LIMIT" />
+    </fieldset>
+    <fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+        <field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_pungacontactform" section="component" />
+    </fieldset>
+</config>
