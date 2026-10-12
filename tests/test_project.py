@@ -107,6 +107,16 @@ def test_sender_copy() -> None:
     print(result.stdout.strip())
 
 
+def test_page_display() -> None:
+    """Exercise contact-menu page headings and Joomla browser-title integration."""
+    result = subprocess.run(
+        ['php', '-d', 'zend.assertions=1', '-d', 'assert.exception=1', str(ROOT / 'tests/test_page_display.php')],
+        text=True, capture_output=True, check=False,
+    )
+    check(result.returncode == 0, f'Page display tests failed: {result.stdout}{result.stderr}')
+    print(result.stdout.strip())
+
+
 def test_language() -> None:
     """Reject missing/duplicate translation keys and malformed INI assignments."""
     count = 0
@@ -283,6 +293,7 @@ if __name__ == '__main__':
     test_message_store()
     test_sender_copy()
     test_form_alignment()
+    test_page_display()
     test_language()
     test_security_invariants()
     test_sef_router()

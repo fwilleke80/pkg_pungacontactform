@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.8 — 2026-10-12
+
+### Fixed
+- Respect Joomla menu item **Show Page Heading** and **Page Heading** in the standalone contact view. Render the heading as escaped text above the form; fall back to the browser/menu title when the heading is blank.
+- Use Joomla's inherited `HtmlView::setDocumentTitle()` to apply **Browser Page Title** and the Global Configuration **Site Name in Page Titles** setting, including its configured name position.
+- Align the optional page heading with the existing centered form column without changing module rendering or submitted form data.
+
+### Notes
+- No database migration or menu item recreation is necessary. The heading follows the existing menu Page Display settings. A live Joomla/Cassiopeia verification is still required.
+
 ## 0.1.7 — 2026-10-12
 - Added Left and Centered form alignment to component Options, with optional per-menu-item and per-module overrides (Inherit / Left / Centered).
 - Centered alignment positions the shared form within its parent area without changing field or text alignment, sender-copy handling, or submission behavior.

@@ -18,3 +18,16 @@ Under **Options → Message and presentation → Form alignment**, select **Left
 Each contact-form menu item and module instance has its own **Form alignment** setting with **Inherit component setting**, **Left**, and **Centered** values. Existing installations and items remain left-aligned unless this is changed.
 
 Centered alignment moves the complete form into the horizontal center of its containing area (page content or module position), while preserving the form’s responsive maximum width of 38 rem. Input labels, text, buttons, and fields retain their usual left alignment. No extra frontend JavaScript is used.
+
+## Contact page title and visible heading
+
+The standalone **Punga Contact Form → Contact form** menu item follows Joomla's built-in **Page Display** settings:
+
+- **Show Page Heading** controls the presence of an HTML `<h1>` above the form.
+- **Page Heading** specifies its text; if empty, the browser/menu title is used.
+- **Browser Page Title** determines the page's document title. If empty, the menu item's title is used.
+- **Global Configuration → SEO → Site Name in Page Titles** controls whether Joomla adds the site name, and whether it appears before or after the page title. This uses the framework's `HtmlView::setDocumentTitle()` without hardcoded separators.
+
+The heading is escaped as plain text. When the form is configured **Centered**, the heading follows the same 38-rem centered column as the form, but the heading text itself remains left aligned. The module never modifies its host page's heading or browser title.
+
+No menu item needs to be recreated to activate the fix. If old page titles or markup appear after upgrading, clear Joomla's page cache and relevant frontend caches.

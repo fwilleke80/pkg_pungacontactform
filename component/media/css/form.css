@@ -10,3 +10,6 @@
 .punga-contact-form .pcf-actions {display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem;}
 .punga-contact-form .pcf-copy label {display:inline;font-weight:400;}
 .punga-contact-form .pcf-trap {position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important;}
+
+.punga-contact-page .pcf-page-heading {width:100%;max-width:38rem;box-sizing:border-box;}
+.punga-contact-page.pcf-layout-centered .pcf-page-heading {margin-inline:auto;}

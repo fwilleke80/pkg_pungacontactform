@@ -7,7 +7,7 @@ import shutil
 import zipfile
 import xml.etree.ElementTree as ET
 
-VERSION = "0-1-7"
+VERSION = "0-1-8"
 ROOT = Path(__file__).resolve().parent
 BUILD = ROOT / "build"
 DIST = ROOT / "dist"

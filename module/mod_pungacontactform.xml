@@ -5,7 +5,7 @@
     <creationDate>2026-10</creationDate>
     <copyright>Copyright (C) 2026 Punga</copyright>
     <license>GNU General Public License version 2 or later</license>
-    <version>0.1.7</version>
+    <version>0.1.8</version>
     <description>MOD_PUNGACONTACTFORM_XML_DESCRIPTION</description>
     <files>
         <filename module="mod_pungacontactform">mod_pungacontactform.php</filename>
