@@ -11,7 +11,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Punga\Component\Pungacontactform\Site\Helper\FormHelper;
 ?>
-<div class="punga-contact-form">
+<div class="punga-contact-form<?php echo $settings['form_alignment'] === 'centered' ? ' pcf-layout-centered' : ''; ?>">
     <?php if (trim((string) $settings['intro']) !== '') : ?>
         <div class="pcf-intro"><?php echo FormHelper::escape((string) $settings['intro']); ?></div>
     <?php endif; ?>

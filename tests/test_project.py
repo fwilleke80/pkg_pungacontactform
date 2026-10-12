@@ -124,6 +124,54 @@ def test_language() -> None:
     print(f'OK: {count} translation strings across all languages')
 
 
+def test_form_alignment() -> None:
+    """Check global/menu/module fields, inherited values, rendering and safe CSS."""
+    expected_global = [('left', 'COM_PUNGACONTACTFORM_FORM_ALIGNMENT_LEFT'),
+                       ('centered', 'COM_PUNGACONTACTFORM_FORM_ALIGNMENT_CENTERED')]
+    expected_override = [('inherit', 'COM_PUNGACONTACTFORM_INHERIT')] + expected_global
+    definitions = [
+        ('component/admin/config.xml', './fieldset[@name="general"]', 'left', expected_global),
+        ('component/site/tmpl/contact/default.xml', './fields/fieldset[@name="basic"]', 'inherit', expected_override),
+        ('module/mod_pungacontactform.xml', './config/fields/fieldset[@name="basic"]', 'inherit', expected_override),
+    ]
+    for filename, parent_path, default, expected in definitions:
+        form = ET.parse(ROOT / filename)
+        field = form.find(f'{parent_path}/field[@name="form_alignment"]')
+        check(field is not None, f'Alignment setting missing: {filename}')
+        check(field.get('type') == 'list' and field.get('default') == default,
+              f'Incorrect alignment defaults in {filename}')
+        check([(e.get('value'), e.text) for e in field.findall('option')] == expected,
+              f'Alignment selections incorrect in {filename}')
+    renderer = (ROOT / 'component/site/src/Helper/FormHelper.php').read_text()
+    template = (ROOT / 'component/site/tmpl/contact/form.php').read_text()
+    styles = (ROOT / 'component/media/css/form.css').read_text()
+    check("$alignment = $get('form_alignment', 'left');" in renderer,
+          'Alignment must inherit global settings using the standard resolver')
+    check("in_array($alignment, ['left', 'centered'], true)" in renderer,
+          'Alignment must be whitelisted before rendering into markup')
+    check("$settings['form_alignment'] === 'centered'" in template and 'pcf-layout-centered' in template,
+          'Both form frontends must render the same alignment class')
+    check('.punga-contact-form.pcf-layout-centered {margin-inline:auto;}' in styles,
+          'Centered mode must apply horizontal automatic margins only')
+    check('max-width:38rem' in styles and 'width:100%' in styles,
+          'Centered mode must preserve responsive form sizing')
+    for lang in ('de-DE', 'en-GB'):
+        for scope in ('component/admin/language', 'component/site/language', 'module/language'):
+            langfile = (f'{scope}/{lang}/' + ('mod_pungacontactform.ini' if scope.startswith('module') else 'com_pungacontactform.ini'))
+            content = (ROOT / langfile).read_text()
+            check('COM_PUNGACONTACTFORM_FORM_ALIGNMENT_CENTERED=' in content,
+                  f'Missing alignment labels in {langfile}')
+        sys = (ROOT / f'component/admin/language/{lang}/com_pungacontactform.sys.ini').read_text()
+        check('COM_PUNGACONTACTFORM_FORM_ALIGNMENT=' in sys,
+              f'Menu editor must have an alignment label in {lang} .sys.ini')
+    result = subprocess.run(['php', '-d', 'zend.assertions=1', '-d', 'assert.exception=1',
+                             str(ROOT / 'tests/test_form_alignment.php')],
+                            text=True, capture_output=True, check=False)
+    check(result.returncode == 0, f'Form alignment tests failed: {result.stdout}{result.stderr}')
+    print('OK: three alignment controls, shared responsive CSS, English/German labels')
+    print(result.stdout.strip())
+
+
 def test_security_invariants() -> None:
     """Check structural properties (not a substitute for runtime testing)."""
     controller = (ROOT / 'component/site/src/Controller/ContactController.php').read_text()
@@ -234,6 +282,7 @@ if __name__ == '__main__':
     test_analytics()
     test_message_store()
     test_sender_copy()
+    test_form_alignment()
     test_language()
     test_security_invariants()
     test_sef_router()

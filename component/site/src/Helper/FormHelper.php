@@ -56,6 +56,7 @@ final class FormHelper
         $copyMode = $get('copy_mode', 'optional');
         $captchaMode = $get('captcha_mode', 'auto');
         $spamMode = $get('spam_filter_mode', 'guests');
+        $alignment = $get('form_alignment', 'left');
 
         return [
             'recipient' => trim($get('recipient_email')),
@@ -63,6 +64,7 @@ final class FormHelper
             // Explicit public identity only: never inherit Joomla's global From for copies.
             'copy_sender_email' => trim((string) $global->get('copy_sender_email', '')),
             'copy_sender_name' => (string) $global->get('copy_sender_name', ''),
+            'form_alignment' => in_array($alignment, ['left', 'centered'], true) ? $alignment : 'left',
             'copy_mode' => in_array($copyMode, ['off', 'optional', 'always'], true) ? $copyMode : 'optional',
             'captcha_mode' => in_array($captchaMode, ['auto', 'required', 'off'], true) ? $captchaMode : 'auto',
             'spam_filter_mode' => in_array($spamMode, ['off', 'guests', 'all'], true) ? $spamMode : 'guests',

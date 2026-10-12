@@ -24,6 +24,11 @@
                 <option value="guests">COM_PUNGACONTACTFORM_SPAM_GUESTS</option>
                 <option value="all">COM_PUNGACONTACTFORM_SPAM_ALL</option>
             </field>
+            <field name="form_alignment" type="list" default="inherit" label="COM_PUNGACONTACTFORM_FORM_ALIGNMENT" description="COM_PUNGACONTACTFORM_FORM_ALIGNMENT_OVERRIDE_DESC">
+                <option value="inherit">COM_PUNGACONTACTFORM_INHERIT</option>
+                <option value="left">COM_PUNGACONTACTFORM_FORM_ALIGNMENT_LEFT</option>
+                <option value="centered">COM_PUNGACONTACTFORM_FORM_ALIGNMENT_CENTERED</option>
+            </field>
             <field name="intro_text" type="textarea" rows="4" label="COM_PUNGACONTACTFORM_INTRO" filter="raw" />
             <field name="success_message" type="textarea" rows="2" label="COM_PUNGACONTACTFORM_SUCCESS" filter="raw" />
             <field name="error_message" type="textarea" rows="2" label="COM_PUNGACONTACTFORM_ERROR" filter="raw" />

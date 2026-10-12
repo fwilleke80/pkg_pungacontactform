@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.7 — 2026-10-12
+- Added Left and Centered form alignment to component Options, with optional per-menu-item and per-module overrides (Inherit / Left / Centered).
+- Centered alignment positions the shared form within its parent area without changing field or text alignment, sender-copy handling, or submission behavior.
+- The existing Left layout remains the default for upgrades and new installations.
+- Added English/German option labels and layout regression tests.
+
 ## 0.1.6 — 2026-10-09
 
 ### Fixed

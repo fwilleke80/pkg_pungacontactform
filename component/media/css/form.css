@@ -1,4 +1,5 @@
-.punga-contact-form {max-width: 38rem;}
+.punga-contact-form {width:100%;max-width:38rem;box-sizing:border-box;}
+.punga-contact-form.pcf-layout-centered {margin-inline:auto;}
 .punga-contact-form .pcf-intro {margin-bottom: 1.25rem;white-space: pre-line;}
 .punga-contact-form .pcf-field {margin-bottom: 1rem;}
 .punga-contact-form label {display:block;font-weight:600;margin-bottom:.35rem;}

@@ -11,3 +11,10 @@ The three message-body retention switchers follow Joomla's standard behavior: **
 The existing **Options → Spam Protection** tab shows all built-in spam phrases and scoring weights as a read-only rule table; the **Test spam classifier** button there opens the existing administrator-only simulator. Strong phrases contribute +9 from the first matching strong group; secondary matches add +4 each. Custom phrases are literal text added in component Options (one phrase per line, at most 50 phrases of length 4–80), matching case-insensitively at word boundaries; any match adds +20. Separate link- and gibberish-related heuristics also contribute. The default rejection threshold is 8. The admin-only spam test view displays rule matches but does not send email, save content, or generate analytics events.
 
 The configured recipient is never included in public markup. Punga Analytics receives only safe status metadata without personal data. Backend message contents must be treated as untrusted input and rendered as escaped text.
+
+## Contact form alignment
+
+Under **Options → Message and presentation → Form alignment**, select **Left** (default) or **Centered**.
+Each contact-form menu item and module instance has its own **Form alignment** setting with **Inherit component setting**, **Left**, and **Centered** values. Existing installations and items remain left-aligned unless this is changed.
+
+Centered alignment moves the complete form into the horizontal center of its containing area (page content or module position), while preserving the form’s responsive maximum width of 38 rem. Input labels, text, buttons, and fields retain their usual left alignment. No extra frontend JavaScript is used.
