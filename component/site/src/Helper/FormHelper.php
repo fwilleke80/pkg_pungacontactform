@@ -216,9 +216,7 @@ final class FormHelper
         $subject = (string) ($previous['subject'] ?? '');
         $body = (string) ($previous['body'] ?? '');
         $wantCopy = !empty($previous['copy']);
-        $isMenu = $source === 'menu';
         $action = Route::_('index.php?option=com_pungacontactform&task=contact.send', false);
-        $cancelUrl = Route::_('index.php', false);
         $formId = 'pcf-' . $contextId;
 
         ob_start();

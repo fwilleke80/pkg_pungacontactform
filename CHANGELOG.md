@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.2.2 — 2026-10-20
+
+### Fixed
+- Fix the editor insertion button doing nothing on click. The XTD plugin registered its WebAsset script with an extra `/js/` segment; Joomla itself inserts that segment, resulting in a non-existent URL and preventing `insert-pungacontactform` from registering.
+- Keep the existing dialog, configuration options, Joomla `editor-api` integration and active-editor insertion logic unchanged.
+
+### Verification
+- Add a WebAsset path regression test that checks the declared media destination and Joomla's generated `/media/.../js/editor.js` path, plus a browser test that loads the real ES module through that path and verifies the button dialog and insertion.
+- No migration or configuration changes. Clear Joomla/browser caches after installing so old editor assets are not reused. Live Joomla 6 verification is still needed.
+
+## 0.2.1 — 2026-10-20
+
+### Fixed
+- Explicitly enable the XTD editor action JavaScript in Joomla WebAssetManager, rather than relying on a button layout to activate its registered module. This ensures the **Contact Form** insertion dialog can open when clicking the editor button.
+- Remove the redundant **Cancel** button from the public contact form in all three render modes (menu, module, article placeholder); the editor insertion dialog retains its useful Cancel action.
+- Add browser-level editor-dialog insertion tests and static asset-wiring regression checks.
+
+### Notes
+- No settings or database migration is necessary; live Joomla 6 editor/TinyMCE verification remains outstanding.
+
+
 ## 0.2.0 — 2026-10-20
 
 ### Added

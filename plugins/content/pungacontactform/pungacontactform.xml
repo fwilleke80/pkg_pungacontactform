@@ -5,7 +5,7 @@
     <creationDate>2026-10</creationDate>
     <copyright>Copyright (C) 2026 Punga</copyright>
     <license>GNU General Public License version 2 or later</license>
-    <version>0.2.0</version>
+    <version>0.2.2</version>
     <description>PLG_CONTENT_PUNGACONTACTFORM_DESCRIPTION</description>
     <namespace path="src">Punga\Plugin\Content\Pungacontactform</namespace>
     <files>

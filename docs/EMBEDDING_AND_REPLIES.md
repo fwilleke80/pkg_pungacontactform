@@ -2,7 +2,7 @@
 
 ## Installation
 
-Install `pkg_pungacontactform_v0-2-0.zip` with Joomla's package installer. This package includes the existing component and site module plus two new plugins:
+Install `pkg_pungacontactform_v0-2-2.zip` with Joomla's package installer. This package includes the existing component and site module plus two new plugins:
 
 - **Content – Punga Contact Form** (`content/pungacontactform`)
 - **Button – Punga Contact Form** (`editors-xtd/pungacontactform`)
@@ -61,3 +61,9 @@ To prevent mail auto-response loops, choose a suitable no-reply mailbox as the p
 ## Manual Joomla verification
 
 Test on an installed Joomla 6 site: package installation and enabling both plugins; modal insert into TinyMCE; placeholder rendered in an article; module selection accessibility; multiple forms; direct submit+redirect from an article; Joomla Proof-of-Work CAPTCHA; browser full-page cache disabled; plain-text acknowledgement with public sender; and legacy menu/module mail paths. These cannot be fully verified by static PHP/unit tests alone.
+
+## Editor button troubleshooting
+
+The XTD plugin registers `editor-button.pungacontactform` as an ES module and explicitly enables it with Joomla WebAssetManager. Its URI is `plg_editors-xtd_pungacontactform/editor.js` (without `/js/`), which Joomla resolves to `/media/plg_editors-xtd_pungacontactform/js/editor.js`. Including `/js/` in the registered URI breaks asset loading. The JavaScript handler registers `insert-pungacontactform` with the `editor-api`, displays a configuration dialog, and inserts a placeholder into the active editor. The dialog has its own Cancel action; the public contact form does not.
+
+After upgrading, clear Joomla/browser caches if an old editor script is being used. Confirm the **Button – Punga Contact Form** plugin is enabled.

@@ -49,11 +49,6 @@ use Punga\Component\Pungacontactform\Site\Helper\FormHelper;
         <?php echo HTMLHelper::_('form.token'); ?>
         <div class="pcf-actions">
             <button type="submit" class="btn btn-primary"><?php echo Text::_('COM_PUNGACONTACTFORM_SEND'); ?></button>
-            <?php if ($isMenu) : ?>
-                <a class="btn btn-outline-secondary" href="<?php echo FormHelper::escape($cancelUrl); ?>"><?php echo Text::_('JCANCEL'); ?></a>
-            <?php else : ?>
-                <button type="reset" class="btn btn-outline-secondary"><?php echo Text::_('JCANCEL'); ?></button>
-            <?php endif; ?>
         </div>
     </form>
 </div>

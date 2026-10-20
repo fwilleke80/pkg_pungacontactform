@@ -7,11 +7,11 @@ import shutil
 import zipfile
 import xml.etree.ElementTree as ET
 
-VERSION = "0-2-0"
+VERSION = "0-2-2"
 ROOT = Path(__file__).resolve().parent
 BUILD = ROOT / "build"
 DIST = ROOT / "dist"
-STAMP = (2026, 10, 20, 14, 0, 0)
+STAMP = (2026, 10, 20, 16, 30, 0)
 
 
 def write_zip(destination: Path, sources: list[tuple[Path, str]]) -> None:

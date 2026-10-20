@@ -12,7 +12,7 @@ Punga Contact Form 0.1.4 is a Joomla 6 package containing a site component and a
 
 ## Form behavior
 
-Visitors enter name, email, subject and message, with optional sender copy and Submit/Cancel controls. Registered users' Joomla name and email are prefilled but editable. The recipient address is never returned to the public browser. Per-instance settings can override copy mode, CAPTCHA mode, content-filter mode, introduction text and feedback text.
+Visitors enter name, email, subject and message, with optional sender copy and Submit control. Registered users' Joomla name and email are prefilled but editable. The recipient address is never returned to the public browser. Per-instance settings can override copy mode, CAPTCHA mode, content-filter mode, introduction text and feedback text.
 
 The contact handler validates the CSRF token, one-time session form context, IP rate limit, timing, honeypot, form fields, CAPTCHA and optional content spam classification before using Joomla's configured mailer factory. The user-provided sender is used only as Reply-To on the outgoing recipient message, while Joomla's global From identity is used as the actual mail sender. Requested sender copies are separate messages, not CC/BCC. Errors are not exposed to anonymous visitors.
 

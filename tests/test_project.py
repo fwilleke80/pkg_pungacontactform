@@ -336,8 +336,26 @@ def test_content_and_acknowledgements() -> None:
     js = (ROOT / 'plugins/editors-xtd/pungacontactform/media/js/editor.js').read_text()
     check('onEditorButtonsSetup' in button and 'insert-pungacontactform' in button,
           'Joomla editor button event or action is missing')
+    check("$wa->useScript('editor-button.pungacontactform')" in button,
+          'Custom editor action must be explicitly enabled, not merely registered')
+    media_xml = ET.parse(ROOT / 'plugins/editors-xtd/pungacontactform/pungacontactform.xml').find('./media')
+    check(media_xml is not None and media_xml.get('destination') == 'plg_editors-xtd_pungacontactform',
+          'Editor plugin must install its JS into the expected Joomla media destination')
+    check("'plg_editors-xtd_pungacontactform/editor.js'" in button,
+          'WebAssetManager URI must OMIT /js/; Joomla inserts the JS directory automatically')
+    check("'plg_editors-xtd_pungacontactform/js/editor.js'" not in button,
+          'Regression: /js/ in registered URI causes Joomla to request /js/js/editor.js')
+    check((ROOT / 'plugins/editors-xtd/pungacontactform/media/js/editor.js').is_file(),
+          'Actual JS must be packaged in the Joomla media/js directory')
+    check("'editor-button.pungacontactform'" in button and "new Button('pungacontactform'" in button,
+          'Asset name and button name must match for Joomla automatic loading')
     check('JoomlaEditorButton.registerAction' in js and 'editor.replaceSelection' in js,
           'Editor must insert via Joomla editors API')
+    form_template = (ROOT / 'component/site/tmpl/contact/form.php').read_text()
+    check('JCANCEL' not in form_template and 'type="reset"' not in form_template,
+          'Public contact form must not show redundant Cancel/reset buttons')
+    check('$cancelUrl' not in (ROOT / 'component/site/src/Helper/FormHelper.php').read_text(),
+          'Remove the obsolete Cancel-to-home redirect')
     controller = (ROOT / 'component/site/src/Controller/ContactController.php').read_text()
     check('AutomaticReplyHelper::send' in controller and 'SenderCopyHelper::send' in controller,
           'Auto-acknowledgements must not replace sender copies')

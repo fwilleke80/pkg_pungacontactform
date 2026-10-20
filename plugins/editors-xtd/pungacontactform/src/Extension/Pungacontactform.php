@@ -76,16 +76,24 @@ final class Pungacontactform extends CMSPlugin implements SubscriberInterface
 
         $document = $app->getDocument();
         $wa = $document->getWebAssetManager();
+        // Script WebAsset URIs omit /js/: Joomla inserts that directory itself.
+        // Including /js/ here resolves to /js/js/editor.js and silently breaks
+        // the editor button's custom action registration.
         if (!$wa->assetExists('script', 'editor-button.pungacontactform'))
         {
             $wa->registerScript(
                 'editor-button.pungacontactform',
-                'plg_editors-xtd_pungacontactform/js/editor.js',
+                'plg_editors-xtd_pungacontactform/editor.js',
                 [],
                 ['type' => 'module'],
                 ['editors']
             );
         }
+        // Merely registering an asset does not guarantee that Joomla renders it.
+        // Explicitly enable the action handler for editors whose button layout
+        // does not automatically activate custom editor-button assets.
+        $wa->useScript('editor-button.pungacontactform');
+
         $document->addScriptOptions('plg_editors-xtd_pungacontactform', [
             'modules' => $modules,
             'strings' => [
