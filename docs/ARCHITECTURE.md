@@ -38,3 +38,5 @@ Joomla events: `onPungaContactFormSent` and `onPungaContactFormRejected`. Generi
 - `build.py`: Deterministic versioned ZIP builder. Run `python3 build.py` in the project root to create the installer and source archives under `dist/`.
 
 Supported databases: MySQL/MariaDB and PostgreSQL. PHP 8.3+ and Joomla 6 are required. The static checks do not substitute for live Joomla installation, SMTP and browser tests.
+
+Since 0.1.9, daily counts use backend-specific atomic upserts (MySQL/MariaDB and PostgreSQL). The administrator Dashboard reconciles undercounted daily totals from retained message-history rows without reducing lifetime counts. See `docs/STATISTICS.md`.

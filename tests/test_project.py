@@ -97,6 +97,30 @@ def test_message_store() -> None:
     print(result.stdout.strip())
 
 
+def test_counter_accounting() -> None:
+    """Validate atomic counter integration and recovery presentation."""
+    store = (ROOT / 'component/site/src/Helper/MessageStoreHelper.php').read_text()
+    helper = (ROOT / 'component/site/src/Helper/CounterHelper.php').read_text()
+    dashboard = (ROOT / 'component/admin/src/View/Info/HtmlView.php').read_text()
+    check('CounterHelper::increment($db' in store, 'Submission store not using atomic counters')
+    check('transactionStart()' in store and 'transactionCommit()' in store and 'transactionRollback()' in store,
+          'Atomic message/counter transaction missing')
+    check('getAffectedRows()' not in store, 'Old unsafe UPDATE/INSERT/retry counter path remains')
+    check('ON DUPLICATE KEY UPDATE' in helper and 'ON CONFLICT' in helper,
+          'Both supported SQL-family atomic upsert variants must exist')
+    check('GREATEST(' in helper, 'Reconciliation must never lower cumulative totals')
+    check('CounterHelper::reconcileRetainedHistory($db)' in dashboard,
+          'Admin dashboard does not repair historical discrepancies')
+    check('COM_PUNGACONTACTFORM_COUNTERS_RECONCILIATION_FAILED' in dashboard,
+          'Admin must be notified when reconciliation fails')
+    for lang, status_label in [('en-GB', 'Sent'), ('de-DE', 'Gesendet')]:
+        strings = (ROOT / f'component/admin/language/{lang}/com_pungacontactform.ini').read_text()
+        check(f'COM_PUNGACONTACTFORM_STATUS_SENT="{status_label}"' in strings,
+              f'Incorrect translated sent status for {lang}')
+    check((ROOT / 'docs/STATISTICS.md').is_file(), 'Missing statistic recovery documentation')
+    print('OK: atomic counter write, repair path, administrator diagnostics and status labels')
+
+
 def test_sender_copy() -> None:
     """Verify visitor copies never inherit private outgoing sender details."""
     result = subprocess.run(
@@ -291,6 +315,7 @@ if __name__ == '__main__':
     test_spam()
     test_analytics()
     test_message_store()
+    test_counter_accounting()
     test_sender_copy()
     test_form_alignment()
     test_page_display()

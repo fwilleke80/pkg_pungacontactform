@@ -12,6 +12,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Database\DatabaseInterface;
+use Joomla\CMS\Log\Log;
+use Punga\Component\Pungacontactform\Site\Helper\CounterHelper;
 
 /** @brief Administrator dashboard with lifetime counters and recent message history. */
 final class HtmlView extends BaseHtmlView
@@ -31,6 +33,23 @@ final class HtmlView extends BaseHtmlView
         }
 
         $db = Factory::getContainer()->get(DatabaseInterface::class);
+        // Automatically repair daily totals missing despite persisted message
+        // records (older releases could lose the first insert silently).
+        // The MAX-based upsert never reduces lifetime totals after retention.
+        try
+        {
+            $repaired = CounterHelper::reconcileRetainedHistory($db);
+            if ($repaired > 0)
+            {
+                $app->enqueueMessage(Text::sprintf('COM_PUNGACONTACTFORM_COUNTERS_RECONCILED', $repaired), 'notice');
+                Log::add('Punga Contact Form: reconciled ' . $repaired . ' daily counter entries from retained submission history.', Log::INFO, 'com_pungacontactform');
+            }
+        }
+        catch (\Throwable $exception)
+        {
+            $app->enqueueMessage(Text::_('COM_PUNGACONTACTFORM_COUNTERS_RECONCILIATION_FAILED'), 'warning');
+            Log::add('Punga Contact Form: counter reconciliation failed (' . get_class($exception) . ', code ' . (int) $exception->getCode() . ').', Log::WARNING, 'com_pungacontactform');
+        }
         $query = $db->getQuery(true)
             ->select([$db->quoteName('status'), 'SUM(' . $db->quoteName('total') . ') AS ' . $db->quoteName('total')])
             ->from($db->quoteName('#__pungacontactform_counts'))

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.9 — 2026-10-20
+
+### Fixed
+- Replace the unreliable first-message UPDATE/INSERT/retry counter sequence with a single atomic upsert on MySQL/MariaDB and PostgreSQL. Commit the history record and its counter as one transaction, falling back to a retained history record on a counter error. First submissions and concurrent requests no longer depend on an unchecked retry.
+- On opening the administrator Dashboard, reconcile undercounted daily totals against retained message history, including earlier 0.1.3–0.1.8 submissions whose history records survived but counters did not. Never decrease existing totals when records are deleted or expired.
+- Report statistics persistence failures in the Joomla log without sender names, recipient addresses or message content; show administrators a warning if reconciliation fails, and a one-time notice when records have been repaired.
+- Rename the sent-message status and Dashboard metric from “Accepted by mail transport” to **“Sent”** (German: “Gesendet”). This still means Joomla accepted the message for dispatch, not guaranteed inbox arrival.
+
+### Notes
+- No database schema migration or component-option changes are needed.
+- Missing counts can only be reconstructed from message records still retained in the database. Older deleted or expired submissions cannot be recovered.
+- Verified with isolated PHP/database-mock tests for MySQL, MariaDB and PostgreSQL; live Joomla installation, actual database concurrency and SMTP tests remain outstanding.
+
+
 ## 0.1.8 — 2026-10-12
 
 ### Fixed

@@ -31,3 +31,7 @@ The standalone **Punga Contact Form → Contact form** menu item follows Joomla'
 The heading is escaped as plain text. When the form is configured **Centered**, the heading follows the same 38-rem centered column as the form, but the heading text itself remains left aligned. The module never modifies its host page's heading or browser title.
 
 No menu item needs to be recreated to activate the fix. If old page titles or markup appear after upgrading, clear Joomla's page cache and relevant frontend caches.
+
+### Submission counters
+
+The **Sent** counter represents main messages accepted by Joomla’s mail transport, not confirmed inbox deliveries. As of v0.1.9, viewing the Dashboard also repairs lower daily counts using retained message history. A transient administrator notice identifies any repairs; a warning indicates a failed reconciliation. See `docs/STATISTICS.md` for limitations and log diagnostics.
