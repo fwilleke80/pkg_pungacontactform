@@ -43,7 +43,7 @@ final class AnalyticsHelper
 		}
 
 		[$kind, $identifier] = array_pad(explode(':', $sourceKey, 2), 2, '');
-		$kind = in_array($kind, ['menu', 'module'], true) ? $kind : 'unknown';
+		$kind = in_array($kind, ['menu', 'module', 'embed'], true) ? $kind : 'unknown';
 		$sourceId = ctype_digit($identifier) ? (int) $identifier : 0;
 		$reason = $outcome === 'rejected' && in_array($reason, [
 			'content_filter', 'honeypot', 'too_fast', 'validation', 'captcha',

@@ -10,6 +10,12 @@
         </field>
         <field name="copy_sender_email" type="email" label="COM_PUNGACONTACTFORM_COPY_SENDER_EMAIL" description="COM_PUNGACONTACTFORM_COPY_SENDER_EMAIL_DESC" filter="string" />
         <field name="copy_sender_name" type="text" default="Punga Contact Form" maxlength="120" label="COM_PUNGACONTACTFORM_COPY_SENDER_NAME" description="COM_PUNGACONTACTFORM_COPY_SENDER_NAME_DESC" filter="string" />
+        <field name="auto_reply_mode" type="list" default="off" label="COM_PUNGACONTACTFORM_AUTOREPLY_MODE" description="COM_PUNGACONTACTFORM_AUTOREPLY_MODE_DESC">
+            <option value="off">COM_PUNGACONTACTFORM_AUTOREPLY_OFF</option>
+            <option value="on">COM_PUNGACONTACTFORM_AUTOREPLY_ON</option>
+        </field>
+        <field name="auto_reply_subject" type="text" maxlength="200" label="COM_PUNGACONTACTFORM_AUTOREPLY_SUBJECT" description="COM_PUNGACONTACTFORM_AUTOREPLY_PLACEHOLDERS" filter="raw" />
+        <field name="auto_reply_body" type="textarea" rows="7" label="COM_PUNGACONTACTFORM_AUTOREPLY_BODY" description="COM_PUNGACONTACTFORM_AUTOREPLY_PLACEHOLDERS" filter="raw" />
         <field name="form_alignment" type="list" default="left" label="COM_PUNGACONTACTFORM_FORM_ALIGNMENT" description="COM_PUNGACONTACTFORM_FORM_ALIGNMENT_DESC">
             <option value="left">COM_PUNGACONTACTFORM_FORM_ALIGNMENT_LEFT</option>
             <option value="centered">COM_PUNGACONTACTFORM_FORM_ALIGNMENT_CENTERED</option>

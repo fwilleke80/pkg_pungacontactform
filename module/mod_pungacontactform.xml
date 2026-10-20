@@ -5,7 +5,7 @@
     <creationDate>2026-10</creationDate>
     <copyright>Copyright (C) 2026 Punga</copyright>
     <license>GNU General Public License version 2 or later</license>
-    <version>0.1.9</version>
+    <version>0.2.0</version>
     <description>MOD_PUNGACONTACTFORM_XML_DESCRIPTION</description>
     <files>
         <filename module="mod_pungacontactform">mod_pungacontactform.php</filename>
@@ -39,6 +39,13 @@
                 <option value="guests">COM_PUNGACONTACTFORM_SPAM_GUESTS</option>
                 <option value="all">COM_PUNGACONTACTFORM_SPAM_ALL</option>
                 </field>
+            <field name="auto_reply_mode" type="list" default="inherit" label="COM_PUNGACONTACTFORM_AUTOREPLY_MODE">
+                <option value="inherit">COM_PUNGACONTACTFORM_INHERIT</option>
+                <option value="off">COM_PUNGACONTACTFORM_AUTOREPLY_OFF</option>
+                <option value="on">COM_PUNGACONTACTFORM_AUTOREPLY_ON</option>
+            </field>
+            <field name="auto_reply_subject" type="text" maxlength="200" label="COM_PUNGACONTACTFORM_AUTOREPLY_SUBJECT" description="COM_PUNGACONTACTFORM_AUTOREPLY_OVERRIDE_DESC" filter="raw" />
+            <field name="auto_reply_body" type="textarea" rows="5" label="COM_PUNGACONTACTFORM_AUTOREPLY_BODY" description="COM_PUNGACONTACTFORM_AUTOREPLY_OVERRIDE_DESC" filter="raw" />
             <field name="form_alignment" type="list" default="inherit" label="COM_PUNGACONTACTFORM_FORM_ALIGNMENT" description="COM_PUNGACONTACTFORM_FORM_ALIGNMENT_OVERRIDE_DESC">
                 <option value="inherit">COM_PUNGACONTACTFORM_INHERIT</option>
                 <option value="left">COM_PUNGACONTACTFORM_FORM_ALIGNMENT_LEFT</option>

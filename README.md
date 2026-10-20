@@ -1,6 +1,6 @@
 # Punga Contact Form
 
-A simple contact form for Joomla 6, available as both a menu item and a site module.
+A simple contact form for Joomla 6, available as a menu item, site module, or article placeholder, with an editor insertion button.
 
 Install the package installer ZIP through Joomla's extension installer, then configure the recipient in **Components → Punga Contact Form → Options**.
 

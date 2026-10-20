@@ -38,7 +38,7 @@ final class MessageStoreHelper
                 || ($status === 'rejected' && $reason === 'content_filter' && (bool) $params->get('store_rejected', 1))
                 || ($status === 'failed' && (bool) $params->get('store_failed', 1));
             [$kind, $id] = array_pad(explode(':', $source, 2), 2, '');
-            $sourceKind = in_array($kind, ['menu', 'module'], true) ? $kind : 'unknown';
+            $sourceKind = in_array($kind, ['menu', 'module', 'embed'], true) ? $kind : 'unknown';
             $sourceId = ctype_digit($id) ? (int) $id : 0;
             // For invalid/CAPTCHA/honeypot submissions, callers pass no sender
             // data; no unvalidated free text is retained in the audit history.

@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.2.0 — 2026-10-20
+
+### Added
+- Installable content plugin supporting `{contactform}` and optional `module=`, `layout=`, and `intro=` parameters. Embedding uses the existing secure renderer, server-side mail configuration, separate one-time form context, message history and Analytics events.
+- Installable Joomla editors-xtd **Contact Form** button with a small native dialog to build and insert article placeholders from available module configurations and presentation settings.
+- Optional configurable automatic acknowledgement emails with custom subject and message templates and `{name}`, `{subject}`, `{site_name}` substitutions. Component defaults may be overridden by menu items and modules. Sender copies and acknowledgements are independent.
+
+### Security and compatibility
+- Automatic acknowledgements use only the already configured public sender identity, never the private recipient address, and are attempted only after successful main mail dispatch.
+- Article placeholders cannot configure recipients, CAPTCHA settings or spam scoring. Only published/accessible module configurations can be selected.
+- Root README stays short; usage, caching caveats and technical details are in `docs/EMBEDDING_AND_REPLIES.md`.
+- Existing contact menu-item, module, moderation, routing and analytics features remain in place. No database schema migration.
+
+### Verification
+- Static PHP, XML/INI, existing regression suite and isolated parser/automatic-reply scenarios passed; a live Joomla 6 install, plugin activation and browser/mail test remain required.
+
 ## 0.1.9 — 2026-10-20
 
 ### Fixed

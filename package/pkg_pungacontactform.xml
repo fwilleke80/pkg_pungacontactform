@@ -6,10 +6,12 @@
     <creationDate>2026-10</creationDate>
     <copyright>Copyright (C) 2026 Punga</copyright>
     <license>GNU General Public License version 2 or later</license>
-    <version>0.1.9</version>
-    <description>Punga Contact Form: contact page and configurable site module.</description>
+    <version>0.2.0</version>
+    <description>Punga Contact Form: contact component, module, content plugin, and editor button.</description>
     <files>
         <file type="component" id="com_pungacontactform">com_pungacontactform.zip</file>
         <file type="module" id="mod_pungacontactform" client="site">mod_pungacontactform.zip</file>
+        <file type="plugin" id="pungacontactform" group="content">plg_content_pungacontactform.zip</file>
+        <file type="plugin" id="pungacontactform" group="editors-xtd">plg_editors_xtd_pungacontactform.zip</file>
     </files>
 </extension>

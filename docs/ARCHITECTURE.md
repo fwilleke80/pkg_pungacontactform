@@ -40,3 +40,8 @@ Joomla events: `onPungaContactFormSent` and `onPungaContactFormRejected`. Generi
 Supported databases: MySQL/MariaDB and PostgreSQL. PHP 8.3+ and Joomla 6 are required. The static checks do not substitute for live Joomla installation, SMTP and browser tests.
 
 Since 0.1.9, daily counts use backend-specific atomic upserts (MySQL/MariaDB and PostgreSQL). The administrator Dashboard reconciles undercounted daily totals from retained message-history rows without reducing lifetime counts. See `docs/STATISTICS.md`.
+
+
+## Version 0.2.0 additions
+
+A Joomla content plugin and editors-xtd plugin join the original component and module, with package membership described in `docs/EMBEDDING_AND_REPLIES.md`. Automatic acknowledgement email handling is in `AutomaticReplyHelper.php` and shares the already-public sender identity validation with `SenderCopyHelper.php`.

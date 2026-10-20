@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="content" method="upgrade">
+    <name>plg_content_pungacontactform</name>
+    <author>Punga</author>
+    <creationDate>2026-10</creationDate>
+    <copyright>Copyright (C) 2026 Punga</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <version>0.2.0</version>
+    <description>PLG_CONTENT_PUNGACONTACTFORM_DESCRIPTION</description>
+    <namespace path="src">Punga\Plugin\Content\Pungacontactform</namespace>
+    <files>
+        <folder plugin="pungacontactform">services</folder>
+        <folder>src</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">language/en-GB/plg_content_pungacontactform.sys.ini</language>
+        <language tag="en-GB">language/en-GB/plg_content_pungacontactform.ini</language>
+        <language tag="de-DE">language/de-DE/plg_content_pungacontactform.sys.ini</language>
+        <language tag="de-DE">language/de-DE/plg_content_pungacontactform.ini</language>
+    </languages>
+</extension>

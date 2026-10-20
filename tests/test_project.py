@@ -29,7 +29,7 @@ def test_all_xml() -> None:
     menu = ROOT / 'component/site/tmpl/contact/default.xml'
     check(menu.is_file(), 'Frontend menu metadata missing')
     package = ET.parse(ROOT / 'package/pkg_pungacontactform.xml')
-    check(len(package.findall('./files/file')) == 2, 'Package needs two children')
+    check(len(package.findall('./files/file')) == 4, 'Package needs four children')
     print(f'OK: {len(files)} XML manifests/configuration files')
 
 
@@ -149,7 +149,7 @@ def test_language() -> None:
         for line in path.read_text(encoding='utf-8').splitlines():
             if not line.strip() or line.lstrip().startswith(';'):
                 continue
-            match = re.fullmatch(r'([A-Z][A-Z0-9_]*)="(.*)"', line)
+            match = re.fullmatch(r'([A-Z][A-Z0-9_-]*)="(.*)"', line)
             check(bool(match), f'Malformed INI line: {path}: {line}')
             key = match.group(1)
             check(key not in keys, f'Duplicate language key {path}: {key}')
@@ -308,6 +308,50 @@ def test_sef_router() -> None:
     print('OK: Joomla SEF router, menu view, POST and redirect wiring')
 
 
+def test_content_and_acknowledgements() -> None:
+    """Exercise new plugin parsers, separate public replies and package membership."""
+    manifest = ET.parse(ROOT / 'package/pkg_pungacontactform.xml')
+    children = manifest.findall('./files/file')
+    assert len(children) == 4
+    assert [(c.get('type'), c.get('id'), c.get('group')) for c in children[-2:]] == [
+        ('plugin', 'pungacontactform', 'content'),
+        ('plugin', 'pungacontactform', 'editors-xtd'),
+    ]
+    for group in ('content', 'editors-xtd'):
+        manifest_file = ROOT / 'plugins' / group / 'pungacontactform/pungacontactform.xml'
+        plugin_xml = ET.parse(manifest_file)
+        folder = plugin_xml.find('./files/folder[@plugin="pungacontactform"]')
+        check(folder is not None and folder.text == 'services',
+              f'{group} plugin must use Joomla 6 DI plugin folder marker')
+        check(plugin_xml.find('./namespace') is not None, 'Plugin namespace missing')
+        provider = (manifest_file.parent / 'services/provider.php').read_text()
+        check('setApplication(Factory::getApplication())' in provider,
+              'Joomla 6 plugins must be initialized with a CMS application')
+    content_source = (ROOT / 'plugins/content/pungacontactform/src/Extension/Pungacontactform.php').read_text()
+    check('onContentPrepare' in content_source and 'parseOptions' in content_source,
+          'Content plugin rendering or parser missing')
+    check('ModuleHelper::getModuleById' in content_source and "'embed'" in content_source,
+          'Content plugin must reuse published accessible module settings')
+    button = (ROOT / 'plugins/editors-xtd/pungacontactform/src/Extension/Pungacontactform.php').read_text()
+    js = (ROOT / 'plugins/editors-xtd/pungacontactform/media/js/editor.js').read_text()
+    check('onEditorButtonsSetup' in button and 'insert-pungacontactform' in button,
+          'Joomla editor button event or action is missing')
+    check('JoomlaEditorButton.registerAction' in js and 'editor.replaceSelection' in js,
+          'Editor must insert via Joomla editors API')
+    controller = (ROOT / 'component/site/src/Controller/ContactController.php').read_text()
+    check('AutomaticReplyHelper::send' in controller and 'SenderCopyHelper::send' in controller,
+          'Auto-acknowledgements must not replace sender copies')
+    check(controller.index('AutomaticReplyHelper::send') > controller.index('$mailer->send();'),
+          'Automatic acknowledgement must occur after main mail dispatch')
+    for filename in ('tests/test_content_plugin.php', 'tests/test_auto_reply.php'):
+        result = subprocess.run(['php', '-d', 'zend.assertions=1', '-d', 'assert.exception=1', str(ROOT / filename)],
+                                capture_output=True, text=True, check=False)
+        check(result.returncode == 0, f'{filename} failed: {result.stdout}{result.stderr}')
+        print(result.stdout.strip())
+    check((ROOT / 'docs/EMBEDDING_AND_REPLIES.md').exists(), 'Detailed plugin/reply documentation missing')
+    print('OK: four-child Joomla package, plugin DI, editor API, mail gating, and plugin tests')
+
+
 if __name__ == '__main__':
     test_all_xml()
     test_retention_switchers()
@@ -322,4 +366,5 @@ if __name__ == '__main__':
     test_language()
     test_security_invariants()
     test_sef_router()
+    test_content_and_acknowledgements()
     print('PASS: all static tests')

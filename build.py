@@ -7,11 +7,11 @@ import shutil
 import zipfile
 import xml.etree.ElementTree as ET
 
-VERSION = "0-1-9"
+VERSION = "0-2-0"
 ROOT = Path(__file__).resolve().parent
 BUILD = ROOT / "build"
 DIST = ROOT / "dist"
-STAMP = (2026, 10, 20, 12, 0, 0)
+STAMP = (2026, 10, 20, 14, 0, 0)
 
 
 def write_zip(destination: Path, sources: list[tuple[Path, str]]) -> None:
@@ -37,6 +37,8 @@ def validate_package_manifest(path: Path, component_name: str, module_name: str)
     assert [(f.attrib["type"], f.attrib["id"], f.text) for f in files] == [
         ("component", "com_pungacontactform", component_name),
         ("module", "mod_pungacontactform", module_name),
+        ("plugin", "pungacontactform", "plg_content_pungacontactform.zip"),
+        ("plugin", "pungacontactform", "plg_editors_xtd_pungacontactform.zip"),
     ]
 
 
@@ -52,14 +54,19 @@ def build() -> None:
     write_zip(component, tree_files(ROOT / "component"))
     write_zip(module, tree_files(ROOT / "module"))
 
+    content_plugin = BUILD / "plg_content_pungacontactform.zip"
+    editor_plugin = BUILD / "plg_editors_xtd_pungacontactform.zip"
+    write_zip(content_plugin, tree_files(ROOT / "plugins" / "content" / "pungacontactform"))
+    write_zip(editor_plugin, tree_files(ROOT / "plugins" / "editors-xtd" / "pungacontactform"))
+
     package_manifest = ROOT / "package" / "pkg_pungacontactform.xml"
     validate_package_manifest(package_manifest, component.name, module.name)
     package = DIST / f"pkg_pungacontactform_v{VERSION}.zip"
-    write_zip(package, [(package_manifest, package_manifest.name), (component, component.name), (module, module.name)])
+    write_zip(package, [(package_manifest, package_manifest.name), (component, component.name), (module, module.name), (content_plugin, content_plugin.name), (editor_plugin, editor_plugin.name)])
 
     source = DIST / f"pungacontactform_v{VERSION}_source.zip"
     source_files: list[tuple[Path, str]] = []
-    for folder in ["component", "module", "package", "tests", "docs"]:
+    for folder in ["component", "module", "plugins", "package", "tests", "docs"]:
         source_files.extend((path, f"pungacontactform/{folder}/{name}") for path, name in tree_files(ROOT / folder))
     source_files.append((ROOT / "README.md", "pungacontactform/README.md"))
     source_files.append((ROOT / "CHANGELOG.md", "pungacontactform/CHANGELOG.md"))
@@ -67,7 +74,7 @@ def build() -> None:
     source_files.append((ROOT / "build.py", "pungacontactform/build.py"))
     write_zip(source, source_files)
 
-    for archive in [component, module, package, source]:
+    for archive in [component, module, content_plugin, editor_plugin, package, source]:
         with zipfile.ZipFile(archive) as zipped:
             assert zipped.testzip() is None, f"Corrupt ZIP: {archive}"
         print(f"OK: {archive} ({archive.stat().st_size:,} bytes)")

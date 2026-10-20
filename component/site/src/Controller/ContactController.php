@@ -15,6 +15,7 @@ use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Punga\Component\Pungacontactform\Site\Helper\AnalyticsHelper;
+use Punga\Component\Pungacontactform\Site\Helper\AutomaticReplyHelper;
 use Punga\Component\Pungacontactform\Site\Helper\FormHelper;
 use Punga\Component\Pungacontactform\Site\Helper\MessageStoreHelper;
 use Punga\Component\Pungacontactform\Site\Helper\SenderCopyHelper;
@@ -215,6 +216,21 @@ final class ContactController extends BaseController
         {
             // Fail closed. The main contact message still reaches its recipient.
             Log::add('Punga Contact Form: sender copy suppressed (public sender missing or unsafe).', Log::WARNING, 'com_pungacontactform');
+        }
+
+        // The acknowledgement is independent from a copy of the submitted text.
+        // It is only sent after the primary contact message was accepted.
+        if (($settings['auto_reply_mode'] ?? 'off') === 'on')
+        {
+            try
+            {
+                AutomaticReplyHelper::send($factory, $settings, $email, $name, $subject);
+            }
+            catch (\Throwable)
+            {
+                // Do not change the successfully sent contact message's outcome.
+                Log::add('Punga Contact Form: optional automatic reply failed or was suppressed.', Log::WARNING, 'com_pungacontactform');
+            }
         }
 
         MessageStoreHelper::record('sent', '', $source, $isGuest, $stored, $analysis);
